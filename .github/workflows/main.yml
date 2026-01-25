@@ -39,8 +39,8 @@ jobs:
           pip install -r requirements.txt
 
       # 2. Запускаем тесты
-      - name: Run Tests
-        run: python -m pytest tests/ --alluredir=allure-results
+      - name: Run Test
+        run: python -m pytest tests/ --headless --alluredir=allure-results
         continue-on-error: true
 
       # 3. Скачиваем историю (чтобы тренды рисовались)
