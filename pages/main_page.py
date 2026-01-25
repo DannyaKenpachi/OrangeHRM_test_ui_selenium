@@ -1,4 +1,4 @@
-from base_page import BasePage
+from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 class MainPage(BasePage):
@@ -7,4 +7,3 @@ class MainPage(BasePage):
 
     def pim(self):
         self.click(self.pim_item)
-
