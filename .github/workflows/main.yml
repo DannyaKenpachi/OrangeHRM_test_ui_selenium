@@ -40,7 +40,7 @@ jobs:
 
       # 2. Запускаем тесты
       - name: Run Test
-        run: python -m pytest tests/ --headless --alluredir=allure-results
+        run: python -m pytest tests/ --alluredir=allure-results
         continue-on-error: true
 
       # 3. Скачиваем историю (чтобы тренды рисовались)
