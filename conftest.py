@@ -10,7 +10,7 @@ def pytest_addoption(parser):
         default=False, 
         help="Запустить браузер в скрытом режиме (без GUI)"
     )
-    
+
 @pytest.fixture()
 def driver():
     service_obj = Service(ChromeDriverManager().install())
