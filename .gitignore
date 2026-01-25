@@ -1,0 +1,24 @@
+# Python (кэш и скомпилированные файлы)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest (кэш тестов)
+.pytest_cache/
+
+# Allure (папки с результатами и отчетами)
+allure_test/
+allure-report/
+my_allure_results/
+
+# Виртуальное окружение (если оно внутри папки проекта)
+venv/
+.venv/
+env/
+
+# Настройки редакторов (VS Code, PyCharm)
+.idea/
+.vscode/
+
+# Скриншоты и видео (если Playwright их делает)
+test-results/
