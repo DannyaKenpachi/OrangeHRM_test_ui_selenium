@@ -15,47 +15,46 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. Устанавливаем Java (нужна для работы Allure)
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      # 2. Скачиваем и устанавливаем Allure вручную (без сторонних экшенов)
-      #- name: Install Allure
-        #run: |
-          #wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
-          #tar -zxvf allure-2.27.0.tgz
-          #sudo mv allure-2.27.0 /opt/allure
-          #sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-          #allure --version
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
+      # 1. Устанавливаем зависимости
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          playwright install chromium
+          # СТРОКУ С PLAYWRIGHT Я УБРАЛ — ОНА ВЫЗЫВАЛА ОШИБКУ 127
 
-      # 3. Запускаем тесты
+      # 2. Запускаем тесты
       - name: Run Tests
         run: python -m pytest tests/ --alluredir=allure-results
         continue-on-error: true
 
-      # 4. Генерируем отчет в папку public
-      #- name: Generate Report
-        #run: allure generate allure-results --clean -o public
+      # 3. Скачиваем историю (если ветки нет — ошибка игнорируется)
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true  # <--- ВОТ ЭТА МАГИЯ. Она позволяет не падать на первом запуске.
+        with:
+          ref: gh-pages
+          path: gh-pages
 
-      # 5. Публикуем
+      # 4. Строим отчет
+      - name: Build Allure report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_results: allure-results
+          allure_report: allure-report
+
+      # 5. Публикуем (если ветки нет — она создастся сама)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./public
-          force_orphan: true
+          publish_dir: allure-report
