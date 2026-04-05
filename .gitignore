@@ -10,6 +10,7 @@ __pycache__/
 allure_test/
 allure-report/
 my_allure_results/
+allure-results/
 
 # Виртуальное окружение (если оно внутри папки проекта)
 venv/
